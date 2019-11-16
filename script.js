@@ -100,7 +100,7 @@ app.post("/blog-posts", jsonParser, (req, res, next) => {
 });
 
 app.delete("/blog-posts/:id", (req, res, next) => {
-    let id = req.params.id;
+    let id = req.params._id;
 
     PostList.delete(id)
         .then(post => {
@@ -120,8 +120,8 @@ app.delete("/blog-posts/:id", (req, res, next) => {
 
 
 app.put("/blog-posts/:id", jsonParser, (req, res, next) => {
-    let id = req.body.id;
-    let paramId = req.params.id;
+    let id = req.body._id;
+    let paramId = req.params._id;
     let title = req.body.title;
     let content = req.body.content;
     let author = req.body.author;
