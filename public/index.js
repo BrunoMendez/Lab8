@@ -66,9 +66,9 @@ function updatePost() {
     var date = d.toString();
 
     let post = {
-        id: id,
+        _id: id,
         title: title != "" ? title : undefined,
-        content: content != " " ? content : undefined,
+        content: content != "" ? content : undefined,
         author: author != "" ? author : undefined,
         publishDate: date != "" ? date : undefined
     }
@@ -98,7 +98,6 @@ function updatePost() {
     .catch(error => {
         console.log(error);
     });
-
 }
 
 function init() {
