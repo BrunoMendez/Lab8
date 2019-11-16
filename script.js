@@ -16,7 +16,7 @@ app.use(morgan("dev"));
 app.get("/blog-posts", (req, res, next) => {
     PostList.get()
         .then( posts => {
-            return res.status( 200 ).json (students);
+            return res.status( 200 ).json (posts);
         })
         .catch( error => {
             res.statusMessage = "Something went wrong with the DB. Try again later.";
@@ -66,7 +66,7 @@ app.post("/blog-posts", jsonParser, (req, res, next) => {
     let title = req.body.title;
     let content = req.body.content;
     let author = req.body.author;
-    let publishDate = req.body.publishDate;
+    let publishDate = new Date(req.body.publishDate);
 
     if ( !title || !content || !author || !publishDate ) {
         return res.status(406).json({
@@ -87,7 +87,7 @@ app.post("/blog-posts", jsonParser, (req, res, next) => {
             return res.status(200).json({
                 message: "Posted!",
                 status:201,
-                 post: post
+                post: post
             });
         })
         .catch( err => {
@@ -100,7 +100,7 @@ app.post("/blog-posts", jsonParser, (req, res, next) => {
 });
 
 app.delete("/blog-posts/:id", (req, res, next) => {
-    let id = req.params._id;
+    let id = req.params.id;
 
     PostList.delete(id)
         .then(post => {
@@ -120,12 +120,8 @@ app.delete("/blog-posts/:id", (req, res, next) => {
 
 
 app.put("/blog-posts/:id", jsonParser, (req, res, next) => {
+    let paramId = req.params.id;
     let id = req.body._id;
-    let paramId = req.params._id;
-    let title = req.body.title;
-    let content = req.body.content;
-    let author = req.body.author;
-    let publishDate = req.body.publishDate;
 
     if (!id) {
         return res.status(406).json({
@@ -139,7 +135,24 @@ app.put("/blog-posts/:id", jsonParser, (req, res, next) => {
             status: 409
         })
     }
-    //PostList.put(post)
+
+    let newPost = req.body;
+
+    PostList.put(newPost)
+        .then(post => {
+            return res.status(200).json({
+                message: "Updated!",
+                status:200,
+                post: post
+            });
+        })
+        .catch( err => {
+			res.statusMessage = "Something went wrong with the DB. Try again later.";
+			return res.status( 500 ).json({
+				status : 500,
+				message : "Something went wrong with the DB. Try again later."
+			})
+        });
 });
 
 

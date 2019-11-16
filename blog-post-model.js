@@ -31,6 +31,16 @@ let PostList = {
 				throw Error( error );
 			});
 
+	},
+	getByID : function(id){
+		return Post.findOne({_id : id})
+			.then(post => {
+				return post;
+			})
+			.catch( error => {
+				throw Error( error );
+			});
+
     },
     delete : function (id) {
         return Post.remove({_id: id})
@@ -54,7 +64,7 @@ let PostList = {
 		return PostList.getByID( updatedPost._id )
 			.then( post => {
 				if ( post ){
-					return Post.findOneAndUpdate( {_id : post._id}, {$set : updatedPost}, {new : true})
+					return Post.findByIdAndUpdate(post._id, {$set : updatedPost}, {new : true})
 						.then( newPost => {
 							return newPost;
 						})

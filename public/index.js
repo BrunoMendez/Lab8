@@ -1,8 +1,6 @@
 function post() {
     let d = new Date();
-    var month = d.getMonth()+1;
-    var day = d.getDate();
-    var date = day + '/' +  month + '/' + d.getFullYear();
+    var date = d.toString();
 
     let post = {
         title: $('#title').val(),
@@ -19,7 +17,7 @@ function post() {
         body: JSON.stringify(post)
     }
 
-    fetch("http://localhost:8080/blog-posts", fetchSettings)
+    fetch("/blog-posts", fetchSettings)
         .then(response => {
             if (response.ok) {
                 return response.json()
@@ -43,7 +41,7 @@ function deletePost() {
     let fetchSettings = {
         method: "delete",
     }
-    fetch("http://localhost:8080/blog-posts/" + id, fetchSettings)
+    fetch("/blog-posts/" + id, fetchSettings)
     .then(response => {
         if (response.ok) {
             return response.json()
@@ -65,15 +63,14 @@ function updatePost() {
     let content = $('#updateContent').val();
     let author = $('#updateAuthor').val();
     let d = new Date();
-    var month = d.getMonth()+1;
-    var date = d.getDate() + '/' +  month + '/' + d.getFullYear();
+    var date = d.toString();
 
     let post = {
         id: id,
-        title: title,
-        content: content,
-        author: author,
-        publishDate: date
+        title: title != "" ? title : undefined,
+        content: content != " " ? content : undefined,
+        author: author != "" ? author : undefined,
+        publishDate: date != "" ? date : undefined
     }
 
     let fetchSettings = {
@@ -84,7 +81,7 @@ function updatePost() {
         body: JSON.stringify(post)
     }
 
-    fetch("http://localhost:8080/blog-posts/" + id, fetchSettings)
+    fetch("/blog-posts/" + id, fetchSettings)
     .then(response => {
         if (response.ok) {
             return response.json()
@@ -105,9 +102,8 @@ function updatePost() {
 }
 
 function init() {
-    fetch("http://localhost:8080/blog-posts")
+    fetch("/blog-posts")
         .then( response => {
-            console.log("@@@");
             if ( response.ok ) {
                 return response.json();
             }
