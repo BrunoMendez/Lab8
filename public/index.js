@@ -116,7 +116,7 @@ function init() {
                                     <li class="content">${posts[i].content}</li>
                                     <li class="author">${posts[i].author}</li>
                                     <li class="publishDate">${posts[i].publishDate}</li>
-                                    <li class="id">${posts[i].id}</li>
+                                    <li class="id">${posts[i]._id}</li>
                                     `)
             }
         })
